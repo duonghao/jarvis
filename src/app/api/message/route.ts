@@ -17,7 +17,7 @@ export const POST = async (request: NextRequest) => {
 
   const { id: userId } = user;
 
-  if (userId) {
+  if (!userId) {
     return new Response('Unauthorised', { status: 401 });
   }
 
@@ -49,7 +49,6 @@ export const POST = async (request: NextRequest) => {
 
   const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
     pineconeIndex,
-    namespace: file.id,
   });
 
   const results = await vectorStore.similaritySearch(message, 4, {
